@@ -87,15 +87,17 @@ class CuentaTest {
         banco.tranferir(origen, destino, new BigDecimal(500));
 
         //Comprobamos el metodo
-        assertEquals("1000.8988", origen.getSaldo().toPlainString());
+        //compribando el metodo debiotwo
+        assertEquals("1000.8989", origen.getSaldo().toPlainString());
+        //comprobando el metodo credito
         assertEquals("3000", destino.getSaldo().toPlainString());
 
         //Comprobamos la relacion entre banco y las cuentas que tiene
         assertEquals(2, banco.getCuentas().size());
 
-        assertEquals("Banco bbva.", destino.getBanco().getNombre());
+        assertEquals("Banco bbva", destino.getBanco().getNombre());
 
-        //Comprobamos la relacion que hay entre cuenta y banco
+        //Comprobamos la relacion que hay entre cuenta y banco por medio del nombre
         assertEquals("Isael", banco.getCuentas().stream()
                 .filter(c -> c.getPersona().equals("Isael"))
                         .findFirst()

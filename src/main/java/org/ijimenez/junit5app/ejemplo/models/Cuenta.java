@@ -41,20 +41,20 @@ public class Cuenta {
         this.saldo = this.saldo.subtract(monto);
     }
 
-    public void debitotwo(BigDecimal monto){
+    public void debitotwo(BigDecimal monto){//de donde quito el monto
         BigDecimal nuevoSaldo = this.saldo.subtract(monto);
         if (nuevoSaldo.compareTo(BigDecimal.ZERO)< 0){
-            throw new DineroInsuficienteException("Dinero Insuficiente");
+           throw new DineroInsuficienteException("Dinero Insuficiente");
         }
         this.saldo = nuevoSaldo;
     }
 
-    public void credito(BigDecimal monto){
+    public void credito(BigDecimal monto){//a donde llega
         this.saldo = this.saldo.add(monto);
     }
 
     @Override
-    public boolean equals(Object obj) {
+    public boolean equals(Object obj) {//prueba para comparar por valor y no por referencia
         if (!(obj instanceof Cuenta)){
             return false;
         }
@@ -64,6 +64,4 @@ public class Cuenta {
         }
         return this.persona.equals(c.getPersona()) && this.saldo.equals(c.getSaldo());
     }
-
-
 }
