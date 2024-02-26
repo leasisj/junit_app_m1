@@ -10,17 +10,17 @@ import static org.junit.jupiter.api.Assertions.*;
 class CuentaTest {
 
     @Test
-    void testNombreCuenta(){
+    void testNombreCuenta() {
         Cuenta cuenta = new Cuenta("isael", new BigDecimal("1000.12345"));
         assertEquals("isael", cuenta.getPersona());
     }
 
     @Test
-    void testSaldoCuenta(){
+    void testSaldoCuenta() {
         Cuenta cuenta = new Cuenta("Isael", new BigDecimal("1000.12345"));
         assertEquals(1000.12345, cuenta.getSaldo().doubleValue());
-        assertFalse(cuenta.getSaldo().compareTo(BigDecimal.ZERO)<0);
-        assertTrue(cuenta.getSaldo().compareTo(BigDecimal.ZERO)>0);
+        assertFalse(cuenta.getSaldo().compareTo(BigDecimal.ZERO) < 0);
+        assertTrue(cuenta.getSaldo().compareTo(BigDecimal.ZERO) > 0);
     }
 
     @Test
@@ -53,7 +53,7 @@ class CuentaTest {
     @Test
     void testDierneroInsuficienteException() {
         Cuenta cuenta = new Cuenta("Isael", new BigDecimal("1000.12345"));
-        Exception exception = assertThrows(DineroInsuficienteException.class, ()->{
+        Exception exception = assertThrows(DineroInsuficienteException.class, () -> {
             cuenta.debitotwo(new BigDecimal("1500"));
         });
         String actual = exception.getMessage();
@@ -86,24 +86,16 @@ class CuentaTest {
         //se prueba el metodo tranferir
         banco.tranferir(origen, destino, new BigDecimal(500));
 
-        //Comprobamos el metodo
-        //compribando el metodo debiotwo
-        assertEquals("1000.8989", origen.getSaldo().toPlainString());
-        //comprobando el metodo credito
-        assertEquals("3000", destino.getSaldo().toPlainString());
-
-        //Comprobamos la relacion entre banco y las cuentas que tiene
-        assertEquals(2, banco.getCuentas().size());
-
-        assertEquals("Banco bbva", destino.getBanco().getNombre());
-
-        //Comprobamos la relacion que hay entre cuenta y banco por medio del nombre
-        assertEquals("Isael", banco.getCuentas().stream()
-                .filter(c -> c.getPersona().equals("Isael"))
+        assertAll(() -> assertEquals("1000.8989", origen.getSaldo().toPlainString()),
+                () -> assertEquals("3000", destino.getSaldo().toPlainString()),
+                () -> assertEquals(2, banco.getCuentas().size()),
+                () -> assertEquals("Banco bbva", destino.getBanco().getNombre()),
+                () -> assertEquals("Isael", banco.getCuentas().stream()
+                        .filter(c -> c.getPersona().equals("Isael"))
                         .findFirst()
-                .get().getPersona());
-
-        assertTrue(banco.getCuentas().stream()
-                .anyMatch(c -> c.getPersona().equals("Susan")));
+                        .get().getPersona()),
+                () -> assertTrue(banco.getCuentas().stream()
+                        .anyMatch(c -> c.getPersona().equals("Susan")))
+        );
     }
 }
